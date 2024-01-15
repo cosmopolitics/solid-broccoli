@@ -1,14 +1,10 @@
+
 return {
     'neovim/nvim-lspconfig',
     dependencies = {
         "williamboman/mason.nvim",
         'williamboman/mason-lspconfig.nvim',
         'neovim/nvim-lspconfig',
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-path',
-        'hrsh7th/cmp-cmdline',
-        'hrsh7th/nvim-cmp',
     },
     config = function()
         require("mason").setup{
@@ -35,6 +31,23 @@ return {
                 end,
             }
         }
+        require("lspconfig").emmet_ls.setup{
+            capabilities = capabilities,
+            filetypes = {"html", "css", "scss"},
+            init_options = {
+                html = {
+                    options = {
+                        -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
+                        ["bem.enabled"] = true,
+                    },
+                },
+            }
+        }
+    end,
+}
+
+
+--[[
         local cmp = require'cmp'
         cmp.setup({
             snippet = {
@@ -46,12 +59,6 @@ return {
                 completion = cmp.config.window.bordered(),
                 documentation = cmp.config.window.bordered(),
             },
-            mapping = cmp.mapping.preset.insert({
-                ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-                ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-                ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-                ["<C-Space>"] = cmp.mapping.complete(),
-            }),
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' }, -- For luasnip users.
@@ -59,5 +66,4 @@ return {
                 { name = 'buffer' },
             })
         })
-    end,
-}
+--]]
