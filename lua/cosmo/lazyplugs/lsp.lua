@@ -21,7 +21,6 @@ return {
                 'tsserver',
                 'cssls',
                 'html',
-                'ocamllsp',
                 'lua_ls',
                 'rust_analyzer',
             },
