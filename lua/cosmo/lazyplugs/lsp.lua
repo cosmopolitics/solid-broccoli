@@ -30,18 +30,6 @@ return {
                 end,
             }
         }
-        require("lspconfig").emmet_ls.setup{
-            capabilities = capabilities,
-            filetypes = {"html", "css", "scss"},
-            init_options = {
-                html = {
-                    options = {
-                        -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
-                        ["bem.enabled"] = true,
-                    },
-                },
-            }
-        }
     end,
 }
 
