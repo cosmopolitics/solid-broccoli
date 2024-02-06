@@ -19,10 +19,13 @@ return {
         require("mason-lspconfig").setup{
             ensure_installed = {
                 'tsserver',
+                'emmet_ls',
                 'cssls',
                 'html',
                 'lua_ls',
                 'rust_analyzer',
+                'gopls',
+                'zk',
             },
             handlers = {
                 function (server_name)
