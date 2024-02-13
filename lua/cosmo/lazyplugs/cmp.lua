@@ -36,10 +36,22 @@ return {
 
                     require('luasnip.loaders.from_vscode').lazy_load()
 
-                    require('luasnip').setup {}
+                    require('luasnip').setup {
+                        history = true,
+                        delete_check_events = 'TextChanged',
+                        -- Display a cursor-like placeholder in unvisited nodes
+                        -- of the snippet.
+                        ext_opts = {
+                            [types.insertNode] = {
+                                unvisited = {
+                                    virt_text = { { '|', 'Conceal' } },
+                                    virt_text_pos = 'inline',
+                                },
+                            },
+                        },
+                    }
                 end,
             },
-
             {
                 'Saecki/crates.nvim',
                 event = 'BufRead Cargo.toml',
