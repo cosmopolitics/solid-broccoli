@@ -26,6 +26,10 @@ return {
                 'rust_analyzer',
                 'gopls',
                 'zk',
+                'ocamllsp',
+                'pylyzer',
+                'svelte',
+                'taplo',
             },
             handlers = {
                 function (server_name)
