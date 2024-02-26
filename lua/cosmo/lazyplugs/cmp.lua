@@ -15,58 +15,62 @@ return {
                 }
             end,
         },
-        {
-            'Saecki/crates.nvim',
-            event = 'BufRead Cargo.toml',
-            config = true,
-        },
-        'saadparwaiz1/cmp_luasnip',
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-path',
         'hrsh7th/cmp-cmdline',
     },
-    event = 'InsertEnter',
-    config = function()
-        local cmp = require 'cmp'
-        local luasnip = require 'luasnip'
-        local select_opts = {behavior = cmp.SelectBehavior.Select}
-
-        cmp.setup {
+    config = function ()
+        cmp.setup({
             snippet = {
                 expand = function(args)
-                    luasnip.lsp_expand(args.body)
-                end
-            },
-            sources = {
-                {name = 'path'},
-                {name = 'nvim_lsp', keyword_length = 1},
-                {name = 'buffer', keyword_length = 3},
-                {name = 'LuaSnip', keyword_length = 2},
-            },
-            window = {
-                documentation = cmp.config.window.bordered()
-            },
-            formatting = {
-                fields = {'menu', 'abbr', 'kind'},
-                format = function(entry, item)
-                    local menu_icon = {
-                        nvim_lsp = 'λ',
-                        luasnip = '⋗',
-                        buffer = 'Ω',
-                        path = '/-',
-                    }
-
-                    item.menu = menu_icon[entry.source.name]
-                    return item
+                    require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
                 end,
             },
-
+            window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered(),
+            },
             mapping = cmp.mapping.preset.insert({
                 ['<CR>'] = cmp.mapping.confirm({ select = true }),
                 ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
             }),
-        }
+            sources = cmp.config.sources({
+                { name = 'nvim_lsp' },
+                { name = 'luasnip' }, -- For luasnip users.
+                { name = 'path' },
+            }, {
+                { name = 'buffer' },
+            })
+        })
+
+        -- Set configuration for specific filetype.
+        cmp.setup.filetype('gitcommit', {
+            sources = cmp.config.sources({
+                { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+            }, {
+                { name = 'buffer' },
+            })
+        })
+
+        -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+        cmp.setup.cmdline({ '/', '?' }, {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = {
+                { name = 'buffer' }
+            }
+        })
+
+        -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+        cmp.setup.cmdline(':', {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({
+                { name = 'path' }
+            }, {
+                { name = 'cmdline' }
+            })
+        })
+
     end
 }

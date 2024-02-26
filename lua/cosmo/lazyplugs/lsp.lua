@@ -1,3 +1,4 @@
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 return {
     'neovim/nvim-lspconfig',
@@ -19,7 +20,6 @@ return {
         require("mason-lspconfig").setup{
             ensure_installed = {
                 'tsserver',
-                'emmet_ls',
                 'cssls',
                 'html',
                 'lua_ls',
@@ -33,7 +33,9 @@ return {
             },
             handlers = {
                 function (server_name)
-                    require("lspconfig")[server_name].setup({})
+                    require("lspconfig")[server_name].setup({
+                          capabilities = capabilities,
+                    })
                 end,
             }
         }
